@@ -24,6 +24,7 @@ import org.wildfly.installationmanager.InstallationChanges;
 import org.wildfly.installationmanager.Channel;
 import org.wildfly.installationmanager.HistoryResult;
 import org.wildfly.installationmanager.ArtifactChange;
+import org.wildfly.installationmanager.InstallationUpdates;
 import org.wildfly.installationmanager.ManifestVersion;
 import org.wildfly.installationmanager.OperationNotAvailableException;
 import org.wildfly.installationmanager.Repository;
@@ -76,6 +77,20 @@ public interface InstallationManager {
     boolean prepareUpdate(Path candidatePath, List<Repository> repositories) throws Exception;
 
     /**
+     * Prepares an updated version of the server installation in {@code candidatePath}.
+     * If no updates are found, this operation does nothing.
+     *
+     * @param candidatePath {@code Path} were the updated version of the server should be located.
+     * @param repositories  List of repositories to be used to prepare this update.If it is null or an empty list,
+     *                      the default repositories will be used instead.
+     * @param manifestVersions Manifest versions to update to. All subscribed channels have to be specified.
+     * @return true if the update candidate was generated, false if candidate was no generated due to not finding any pending updates
+     * @throws IllegalArgumentException if the Path is not writable.
+     * @throws Exception                In case of an error.
+     */
+    boolean prepareUpdate(Path candidatePath, List<Repository> repositories, List<ManifestVersion> manifestVersions) throws Exception;
+
+    /**
      * Lists updates available for the server installation.
      *
      * @param repositories List of repositories to be used to find the available updates. If it is null or an empty list,
@@ -84,6 +99,17 @@ public interface InstallationManager {
      * @throws Exception In case of an error.
      */
     List<ArtifactChange> findUpdates(List<Repository> repositories) throws Exception;
+
+    /**
+     * Lists updates available for the server installation.
+     *
+     * @param repositories List of repositories to be used to find the available updates. If it is null or an empty list,
+     *                     the default repositories will be used instead.
+     * @param manifestVersions Manifest versions to update to. All subscribed channels have to be specified.
+     * @return {@link InstallationUpdates} collections of artifact and channels that are to be updated.
+     * @throws Exception In case of an error.
+     */
+    InstallationUpdates findUpdates(List<Repository> repositories, List<ManifestVersion> manifestVersions) throws Exception;
 
     /**
      * Lists channels the server installation is subscribed to.
