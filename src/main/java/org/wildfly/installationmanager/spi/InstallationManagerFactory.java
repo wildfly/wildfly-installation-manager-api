@@ -20,9 +20,8 @@ package org.wildfly.installationmanager.spi;
 
 import org.wildfly.installationmanager.MavenOptions;
 
-import java.nio.file.Path;
-
 public interface InstallationManagerFactory {
+
     /**
      * Creates InstallationManger for server instance located at {@code installationDir}.
      * If the provided directory is empty, the manger needs to install the server before attempting any other operations.
@@ -31,8 +30,7 @@ public interface InstallationManagerFactory {
      * @param mavenOptions    the options to be used by the manager
      * @return the InstallationManager instance
      */
-    InstallationManager create(Path installationDir, MavenOptions mavenOptions) throws Exception;
-
+    InstallationManager create(InstallationManagerEnvironment environment, MavenOptions mavenOptions) throws Exception;
     /**
      * Gets the name of InstallationManager instance
      *
