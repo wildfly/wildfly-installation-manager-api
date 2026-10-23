@@ -18,21 +18,20 @@
 
 package org.wildfly.installationmanager.spi;
 
-import org.wildfly.installationmanager.ArtifactChange;
+import java.nio.file.Path;
+import java.util.Collection;
+import java.util.List;
+
 import org.wildfly.installationmanager.AvailableManifestVersions;
 import org.wildfly.installationmanager.CandidateType;
-import org.wildfly.installationmanager.FileConflict;
-import org.wildfly.installationmanager.InstallationChanges;
 import org.wildfly.installationmanager.Channel;
+import org.wildfly.installationmanager.FileConflict;
 import org.wildfly.installationmanager.HistoryResult;
+import org.wildfly.installationmanager.InstallationChanges;
 import org.wildfly.installationmanager.InstallationUpdates;
 import org.wildfly.installationmanager.ManifestVersion;
 import org.wildfly.installationmanager.OperationNotAvailableException;
 import org.wildfly.installationmanager.Repository;
-
-import java.nio.file.Path;
-import java.util.Collection;
-import java.util.List;
 
 public interface InstallationManager {
     /**
@@ -117,19 +116,6 @@ public interface InstallationManager {
     /**
      * Lists updates available for the server installation.
      *
-     * @deprecated Deprecated in favour of {@link #findInstallationUpdates(List repositories)}, which returns info
-     *  about upgraded manifests, as well as upgraded artifacts.
-     *
-     * @param repositories List of repositories to be used to find the available updates. If it is null or an empty list,
-     *                     the default repositories will be used instead.
-     * @return list of {@code ArtifactChange} available for update.
-     * @throws Exception In case of an error.
-     */
-    List<ArtifactChange> findUpdates(List<Repository> repositories) throws Exception;
-
-    /**
-     * Lists updates available for the server installation.
-     *
      * @param repositories List of repositories to be used to find the available updates. If it is null or an empty list,
      *                     the default repositories will be used instead.
      * @return {@link InstallationUpdates} collections of artifact and Wildfly Channel manifests that can be updated.
@@ -207,56 +193,6 @@ public interface InstallationManager {
      * @throws Exception                In case of an error.
      */
     Path createSnapshot(Path targetPath) throws Exception;
-
-    /**
-     * Generate an apply update CLI command.
-     * The generated command can be run in separate process to apply changes.
-     *
-     * @param candidatePath - Specify the directory path of the candidate installation to apply.
-     * @param scriptHome - Specify the directory path containing the script used to execute the apply command.
-     * @return a CLI command.
-     * @throws OperationNotAvailableException - if the installation manager CLI support is not installed
-     */
-    @Deprecated(forRemoval = true)
-    String generateApplyUpdateCommand(Path scriptHome, Path candidatePath) throws OperationNotAvailableException;
-
-    /**
-     * Generate an apply rollback CLI command.
-     * The generated command can be run in separate process to apply changes.
-     *
-     * @param candidatePath - Specify the directory path of the candidate installation to apply.
-     * @param scriptHome - Specify the directory path containing the script used to execute the apply command.
-     * @return a CLI command.
-     * @throws OperationNotAvailableException - if the installation manager CLI support is not installed
-     */
-    @Deprecated(forRemoval = true)
-    String generateApplyRevertCommand(Path scriptHome, Path candidatePath) throws OperationNotAvailableException;
-
-    /**
-     * Generate an apply update CLI command.
-     * The generated command can be run in separate process to apply changes.
-     *
-     * @param candidatePath - Specify the directory path of the candidate installation to apply.
-     * @param scriptHome - Specify the directory path containing the script used to execute the apply command.
-     * @param shell - Specify what shell should the script be runnable in
-     * @return a CLI command.
-     * @throws OperationNotAvailableException - if the installation manager CLI support is not installed
-     */
-    @Deprecated(forRemoval = true)
-    String generateApplyUpdateCommand(Path scriptHome, Path candidatePath, OsShell shell) throws OperationNotAvailableException;
-
-    /**
-     * Generate an apply rollback CLI command.
-     * The generated command can be run in separate process to apply changes.
-     *
-     * @param candidatePath - Specify the directory path of the candidate installation to apply.
-     * @param scriptHome - Specify the directory path containing the script used to execute the apply command.
-     * @param shell - Specify what shell should the script be runnable in
-     * @return a CLI command.
-     * @throws OperationNotAvailableException - if the installation manager CLI support is not installed
-     */
-    @Deprecated(forRemoval = true)
-    String generateApplyRevertCommand(Path scriptHome, Path candidatePath, OsShell shell) throws OperationNotAvailableException;
 
     /**
      * Generate an apply update CLI command.
